@@ -2,6 +2,15 @@
 FROM python:3.5.6
 MAINTAINER Scott Essner <scott.essner@gmail.com>
 
+# After we installed software-properties-common, now we can add our ppa's for handbrake
+RUN add-apt-repository ppa:stebbins/handbrake-releases \
+    && add-apt-repository ppa:mc3man/xerus-media \
+
+# Install software from ppa's
+RUN apt-get update && apt-get -y install --no-install-recommends \
+    handbrake-cli \
+    libavcodec-extra
+
 # Create the group and user to be used in this container
 RUN groupadd ssessner && useradd -m -g ssessner -s /bin/bash ssessner
 
