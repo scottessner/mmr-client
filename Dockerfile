@@ -2,6 +2,10 @@
 FROM python:3.5.6
 MAINTAINER Scott Essner <scott.essner@gmail.com>
 
+# Install add-apt-repository from software-properties-common
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    software-properties-common \
+
 # After we installed software-properties-common, now we can add our ppa's for handbrake
 RUN add-apt-repository ppa:stebbins/handbrake-releases \
     && add-apt-repository ppa:mc3man/xerus-media \
