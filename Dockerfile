@@ -27,6 +27,8 @@ RUN groupadd ssessner && useradd -m -g ssessner -s /bin/bash ssessner
 RUN mkdir -p /home/ssessner/client
 WORKDIR /home/ssessner/client
 
+RUN mkdir -p /data/media
+
 # Set up links to refer to python3 versions of python and pip
 RUN cd /usr/bin \
     && ln -s python3 python \
