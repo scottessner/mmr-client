@@ -1,17 +1,19 @@
 # Start with latest LTS of Ubuntu
-FROM python:3.5.6
+FROM ubuntu:latest
 MAINTAINER Scott Essner <scott.essner@gmail.com>
 
 # Install add-apt-repository from software-properties-common
 RUN apt-get update && apt-get install -y --no-install-recommends \
     software-properties-common \
+    python3 \
+    python3-pip \
     python3-dev \
     gcc \
     git
 
 # After we installed software-properties-common, now we can add our ppa's for handbrake
 RUN add-apt-repository ppa:stebbins/handbrake-releases \
-    && add-apt-repository ppa:mc3man/xerus-media \
+    && add-apt-repository ppa:mc3man/xerus-media
 
 # Install software from ppa's
 RUN apt-get update && apt-get -y install --no-install-recommends \
@@ -24,6 +26,14 @@ RUN groupadd ssessner && useradd -m -g ssessner -s /bin/bash ssessner
 # Create the working directory (and set it as the working directory)
 RUN mkdir -p /home/ssessner/client
 WORKDIR /home/ssessner/client
+
+# Set up links to refer to python3 versions of python and pip
+RUN cd /usr/bin \
+    && ln -s python3 python \
+    && ln -s pip3 pip
+
+# Need to install setuptools to build from source distributions
+RUN pip install setuptools
 
 # Install the package dependencies (this step is separated
 # from copying all the source code to avoid having to
