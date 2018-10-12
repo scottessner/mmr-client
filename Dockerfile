@@ -5,7 +5,9 @@ MAINTAINER Scott Essner <scott.essner@gmail.com>
 # Install add-apt-repository from software-properties-common
 RUN apt-get update && apt-get install -y --no-install-recommends \
     software-properties-common \
-    gcc
+    python3-dev \
+    gcc \
+    git
 
 # After we installed software-properties-common, now we can add our ppa's for handbrake
 RUN add-apt-repository ppa:stebbins/handbrake-releases \
