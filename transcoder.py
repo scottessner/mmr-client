@@ -67,13 +67,12 @@ def transcode(client):
             # TODO: Send completion status to api
             return process.poll()
 
-
 if __name__ == '__main__':
     url = 'http://ssessner.com/v1'
 
     client = MmrClient(url, '/data/media')
 
-    for i in range(5):
+    while True:
         client.take_file()
         print('Compressing: {}'.format(client.task['source_path']))
         status = transcode(client)
