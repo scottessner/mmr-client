@@ -37,7 +37,7 @@ class MmrClient(object):
         elif resp.status_code == 400:
             print('Not added: {}'.format(file))
 
-    def search_files(self, search_folder, regex):
+    def search_files(self, search_folder, include_regex, exclude_regex):
 
         results = list()
 
@@ -45,11 +45,13 @@ class MmrClient(object):
 
             for file in files:
 
-                if re.search(regex, file) is not None:
+                if re.search(include_regex, file):
 
-                    folder = os.path.relpath(root, self.base_path)
+                    if not re.search(exclude_regex, file):
 
-                    results.append(os.path.join(folder, file))
+                        folder = os.path.relpath(root, self.base_path)
+
+                        results.append(os.path.join(folder, file))
 
         return results
 

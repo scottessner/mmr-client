@@ -1,5 +1,5 @@
 # Start with latest LTS of Ubuntu
-FROM ubuntu:latest
+FROM ubuntu:xenial
 MAINTAINER Scott Essner <scott.essner@gmail.com>
 
 # Install add-apt-repository from software-properties-common
