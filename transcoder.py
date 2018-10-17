@@ -69,8 +69,9 @@ def transcode(client):
             # TODO: Send completion status to api
             return process.poll()
 
+
 if __name__ == '__main__':
-    url = 'http://ssessner.com/v1'
+    url = 'http://ssessner.com/mmr-api/v1'
 
     client = MmrClient(url, '/data/media')
 
