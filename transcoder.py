@@ -62,6 +62,8 @@ def transcode(client):
                 # print('Status Matched: {}'.format(status))
                 os.remove(input_path)
                 client.complete_file()
+            else:
+                client.error_file()
             print('Transcoder completed with return code {}'.format(process.poll()))
 
             # TODO: Send completion status to api

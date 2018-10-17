@@ -30,7 +30,7 @@ class MmrClient(object):
         folder, file = os.path.split(relative_path)
 
         resp = requests.post('{}/tasks'.format(self.url),
-                             json={'path': relative_path})
+                             json={'source_path': relative_path})
 
         if resp.status_code == 201:
             print('Added: {}'.format(file))
@@ -63,7 +63,7 @@ class MmrClient(object):
             self.task = json.loads(resp.text)
 
     def start_file(self):
-        self.task['time_started'] = datetime.now().isoformat()
+        self.task['state'] = 'active'
         self.update_status()
 
     def set_progress(self, progress):
@@ -71,8 +71,13 @@ class MmrClient(object):
         self.update_status()
 
     def complete_file(self):
-        self.task['time_completed'] = datetime.now().isoformat()
+        self.task['state'] = 'complete'
         self.task['progress'] = 100
+        self.update_status()
+        self.task = None
+
+    def error_file(self):
+        self.task['state'] = 'error'
         self.update_status()
         self.task = None
 
