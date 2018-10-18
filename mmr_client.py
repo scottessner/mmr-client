@@ -25,6 +25,11 @@ class MmrClient(object):
             return os.path.join(self.base_path, self.task['dest_path'])
         return None
 
+    @property
+    def log_path(self):
+        if self.task:
+            return os.path.join(self.base_path, 'tmp', 'logs', '{}.log'.format(self.task['id']))
+
     def add_file(self, relative_path):
 
         folder, file = os.path.split(relative_path)

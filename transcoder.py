@@ -28,46 +28,50 @@ def transcode(client):
     if not os.path.exists(folder):
         os.makedirs(folder)
 
-    command = ['HandBrakeCLI',
-               '-i',
-               input_path,
-               '-o',
-               output_path,
-               '--preset=HQ 1080p30 Surround',
-               '--subtitle',
-               'scan',
-               '-F']
+    with open(client.log_path, 'w+') as logfile:
 
-    process = subprocess.Popen(command,
-                               stdout=subprocess.PIPE,
-                               stderr=subprocess.PIPE)
+        command = ['HandBrakeCLI',
+                   '-i',
+                   input_path,
+                   '-o',
+                   output_path,
+                   '--preset=HQ 1080p30 Surround',
+                   '--subtitle',
+                   'scan',
+                   '-F']
 
-    progress = dict()
-    while True:
-        line = ''
-        while line[-1:] != '\r' and process.poll() is None:
-            line = line + bytes.decode(process.stdout.read(1))
+        process = subprocess.Popen(command,
+                                   stdout=subprocess.PIPE,
+                                   stderr=subprocess.PIPE)
 
-        latest_progress = find_transcode_progress(line)
-        if progress.get('progress', None) != latest_progress.get('progress', None):
-            progress = latest_progress
-            # print(line)
-            if progress.get('progress', None):
-                client.set_progress(progress['progress'])
-                print('Transcoding: {}% Complete ETA: {}'.format(progress['progress'], progress['eta']))
-            # TODO: Send progress update to api
+        progress = dict()
+        while True:
+            line = ''
+            while line[-1:] != '\r' and process.poll() is None:
+                line = line + bytes.decode(process.stdout.read(1))
 
-        if process.poll() is not None:
-            if process.poll() == 0:
-                # print('Status Matched: {}'.format(status))
-                os.remove(input_path)
-                client.complete_file()
-            else:
-                client.error_file()
-            print('Transcoder completed with return code {}'.format(process.poll()))
+            logfile.write(line)
 
-            # TODO: Send completion status to api
-            return process.poll()
+            latest_progress = find_transcode_progress(line)
+            if progress.get('progress', None) != latest_progress.get('progress', None):
+                progress = latest_progress
+                # print(line)
+                if progress.get('progress', None):
+                    client.set_progress(progress['progress'])
+                    print('Transcoding: {}% Complete ETA: {}'.format(progress['progress'], progress['eta']))
+                # TODO: Send progress update to api
+
+            if process.poll() is not None:
+                if process.poll() == 0:
+                    # print('Status Matched: {}'.format(status))
+                    os.remove(input_path)
+                    client.complete_file()
+                else:
+                    client.error_file()
+                logfile.write('HandBrakeCLI completed with return code {}'.format(process.poll()))
+
+                # TODO: Send completion status to api
+                return process.poll()
 
 
 if __name__ == '__main__':
