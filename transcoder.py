@@ -42,15 +42,13 @@ def transcode(client):
 
         process = subprocess.Popen(command,
                                    stdout=subprocess.PIPE,
-                                   stderr=subprocess.PIPE)
+                                   stderr=logfile)
 
         progress = dict()
         while True:
             line = ''
             while line[-1:] != '\r' and process.poll() is None:
                 line = line + bytes.decode(process.stdout.read(1))
-
-            logfile.write(line)
 
             latest_progress = find_transcode_progress(line)
             if progress.get('progress', None) != latest_progress.get('progress', None):
@@ -75,6 +73,7 @@ def transcode(client):
 
 
 if __name__ == '__main__':
+    # url = 'http://127.0.0.1:5000/mmr-api/v1'
     url = 'http://ssessner.com/mmr-api/v1'
 
     client = MmrClient(url, '/data/media')
