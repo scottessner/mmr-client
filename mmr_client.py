@@ -50,13 +50,15 @@ class MmrClient(object):
 
             for file in files:
 
-                if re.search(include_regex, file):
+                folder = os.path.relpath(root, self.base_path)
 
-                    if not re.search(exclude_regex, file):
+                relative_path = os.path.join(folder, file)
 
-                        folder = os.path.relpath(root, self.base_path)
+                if re.search(include_regex, relative_path):
 
-                        results.append(os.path.join(folder, file))
+                    if not re.search(exclude_regex, relative_path):
+
+                        results.append(relative_path)
 
         return results
 
