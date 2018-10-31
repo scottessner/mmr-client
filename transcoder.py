@@ -1,6 +1,7 @@
 import os
 import re
 import subprocess
+import time
 from mmr_client import MmrClient
 
 progress_regex = re.compile('Encoding:.*, (?P<progress>\d{0,2}).* \((?P<fps>.{0,6}) fps, avg (?P<fps_avg>.{0,6}) fps.*(?P<hours>\d{2})h(?P<minutes>\d{2})m(?P<seconds>\d{2})s\)')
@@ -80,5 +81,9 @@ if __name__ == '__main__':
 
     while True:
         client.take_file()
-        print('Compressing: {}'.format(client.task['source_path']))
-        status = transcode(client)
+
+        if client.task:
+            print('Compressing: {}'.format(client.task['source_path']))
+            status = transcode(client)
+        else:
+            time.sleep(60)

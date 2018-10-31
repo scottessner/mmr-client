@@ -2,7 +2,7 @@ import os
 import requests
 import re
 import json
-from datetime import datetime
+import time
 import platform
 
 
@@ -63,11 +63,14 @@ class MmrClient(object):
         return results
 
     def take_file(self):
-        resp = requests.post('{}/tasks/next'.format(self.url),
-                             json={'host': platform.node()})
+        try:
+            resp = requests.post('{}/tasks/next'.format(self.url),
+                                 json={'host': platform.node()})
 
-        if resp.status_code == 201:
-            self.task = json.loads(resp.text)
+            if resp.status_code == 201:
+                self.task = json.loads(resp.text)
+        except ConnectionError:
+            print('Cannot connect to server')
 
     def start_file(self):
         self.task['state'] = 'active'
@@ -80,12 +83,23 @@ class MmrClient(object):
     def complete_file(self):
         self.task['state'] = 'complete'
         self.task['progress'] = 100
-        self.update_status()
+        while True:
+            try:
+                self.update_status()
+            except ConnectionError:
+                time.sleep(30)
+            break
+
         self.task = None
 
     def error_file(self):
         self.task['state'] = 'error'
-        self.update_status()
+        while True:
+            try:
+                self.update_status()
+            except ConnectionError:
+                time.sleep(30)
+            break
         self.task = None
 
     def update_status(self):
