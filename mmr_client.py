@@ -28,7 +28,7 @@ class MmrClient(object):
     @property
     def tmp_path(self):
         if self.task:
-            folder, file = self.dest_path.split()
+            folder, file = os.path.split(self.dest_path)
             return os.path.join(folder, '.{}'.format(file))
         return None
 
