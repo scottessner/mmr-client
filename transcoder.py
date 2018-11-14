@@ -61,8 +61,8 @@ def transcode(client):
             if process.poll() is not None:
                 if process.poll() == 0:
                     # print('Status Matched: {}'.format(status))
-                    os.remove(client.source_path)
                     os.rename(client.tmp_path, client.dest_path)
+                    os.remove(client.source_path)
                     client.complete_file()
                 else:
                     client.error_file()
