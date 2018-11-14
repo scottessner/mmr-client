@@ -22,10 +22,8 @@ def find_transcode_progress(line):
 def transcode(client):
 
     client.start_file()
-    input_path = client.source_path
-    output_path = client.dest_path
 
-    folder = os.path.split(output_path)[0]
+    folder = os.path.split(client.tmp_path)[0]
     if not os.path.exists(folder):
         os.makedirs(folder)
 
@@ -33,9 +31,9 @@ def transcode(client):
 
         command = ['HandBrakeCLI',
                    '-i',
-                   input_path,
+                   client.source_path,
                    '-o',
-                   output_path,
+                   client.tmp_path,
                    '--preset=HQ 1080p30 Surround',
                    '--subtitle',
                    'scan',
@@ -63,7 +61,8 @@ def transcode(client):
             if process.poll() is not None:
                 if process.poll() == 0:
                     # print('Status Matched: {}'.format(status))
-                    os.remove(input_path)
+                    os.remove(client.source_path)
+                    os.rename(client.tmp_path, client.dest_path)
                     client.complete_file()
                 else:
                     client.error_file()

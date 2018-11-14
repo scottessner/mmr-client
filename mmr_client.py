@@ -26,6 +26,13 @@ class MmrClient(object):
         return None
 
     @property
+    def tmp_path(self):
+        if self.task:
+            folder, file = self.dest_path.split()
+            return os.path.join(folder, '.{}'.format(file))
+        return None
+
+    @property
     def log_path(self):
         if self.task:
             return os.path.join(self.base_path, 'tmp', 'logs', '{}.log'.format(self.task['id']))
@@ -69,21 +76,21 @@ class MmrClient(object):
 
             if resp.status_code == 201:
                 self.task = json.loads(resp.text)
-        except (ConnectionError, TimeoutError):
+        except (ConnectionError, TimeoutError, ConnectionResetError):
             print('Cannot connect to server')
 
     def start_file(self):
         self.task['state'] = 'active'
         try:
             self.update_status()
-        except (ConnectionError, TimeoutError):
+        except (ConnectionError, TimeoutError, ConnectionResetError):
             pass
 
     def set_progress(self, progress):
         self.task['progress'] = progress
         try:
             self.update_status()
-        except (ConnectionError, TimeoutError):
+        except (ConnectionError, TimeoutError, ConnectionResetError):
             pass
 
     def complete_file(self):
@@ -92,7 +99,7 @@ class MmrClient(object):
         while True:
             try:
                 self.update_status()
-            except (ConnectionError, TimeoutError):
+            except (ConnectionError, TimeoutError, ConnectionResetError):
                 time.sleep(30)
             break
 
@@ -103,7 +110,7 @@ class MmrClient(object):
         while True:
             try:
                 self.update_status()
-            except (ConnectionError, TimeoutError):
+            except (ConnectionError, TimeoutError, ConnectionResetError):
                 time.sleep(30)
             break
         self.task = None
