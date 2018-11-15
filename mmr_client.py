@@ -77,21 +77,21 @@ class MmrClient(object):
 
             if resp.status_code == 201:
                 self.task = json.loads(resp.text)
-        except (ConnectionError, TimeoutError, ConnectionResetError, NewConnectionError):
+        except requests.exceptions.RequestException:
             print('Cannot connect to server')
 
     def start_file(self):
         self.task['state'] = 'active'
         try:
             self.update_status()
-        except (ConnectionError, TimeoutError, ConnectionResetError, NewConnectionError):
+        except requests.exceptions.RequestException:
             pass
 
     def set_progress(self, progress):
         self.task['progress'] = progress
         try:
             self.update_status()
-        except (ConnectionError, TimeoutError, ConnectionResetError, NewConnectionError):
+        except requests.exceptions.RequestException:
             pass
 
     def complete_file(self):
@@ -100,7 +100,7 @@ class MmrClient(object):
         while True:
             try:
                 self.update_status()
-            except (ConnectionError, TimeoutError, ConnectionResetError, NewConnectionError):
+            except requests.exceptions.RequestException:
                 time.sleep(30)
             break
 
@@ -111,7 +111,7 @@ class MmrClient(object):
         while True:
             try:
                 self.update_status()
-            except (ConnectionError, TimeoutError, ConnectionResetError, NewConnectionError):
+            except requests.exceptions.RequestException:
                 time.sleep(30)
             break
         self.task = None
