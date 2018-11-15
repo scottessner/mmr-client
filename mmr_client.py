@@ -4,6 +4,7 @@ import re
 import json
 import time
 import platform
+from urllib3.exceptions import NewConnectionError
 
 
 class MmrClient(object):
@@ -76,21 +77,21 @@ class MmrClient(object):
 
             if resp.status_code == 201:
                 self.task = json.loads(resp.text)
-        except (ConnectionError, TimeoutError, ConnectionResetError):
+        except (ConnectionError, TimeoutError, ConnectionResetError, NewConnectionError):
             print('Cannot connect to server')
 
     def start_file(self):
         self.task['state'] = 'active'
         try:
             self.update_status()
-        except (ConnectionError, TimeoutError, ConnectionResetError):
+        except (ConnectionError, TimeoutError, ConnectionResetError, NewConnectionError):
             pass
 
     def set_progress(self, progress):
         self.task['progress'] = progress
         try:
             self.update_status()
-        except (ConnectionError, TimeoutError, ConnectionResetError):
+        except (ConnectionError, TimeoutError, ConnectionResetError, NewConnectionError):
             pass
 
     def complete_file(self):
@@ -99,7 +100,7 @@ class MmrClient(object):
         while True:
             try:
                 self.update_status()
-            except (ConnectionError, TimeoutError, ConnectionResetError):
+            except (ConnectionError, TimeoutError, ConnectionResetError, NewConnectionError):
                 time.sleep(30)
             break
 
@@ -110,7 +111,7 @@ class MmrClient(object):
         while True:
             try:
                 self.update_status()
-            except (ConnectionError, TimeoutError, ConnectionResetError):
+            except (ConnectionError, TimeoutError, ConnectionResetError, NewConnectionError):
                 time.sleep(30)
             break
         self.task = None
