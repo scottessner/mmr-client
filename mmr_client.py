@@ -84,15 +84,15 @@ class MmrClient(object):
         self.task['state'] = 'active'
         try:
             self.update_status()
-        except requests.exceptions.RequestException:
-            pass
+        except requests.exceptions.RequestException as e:
+            print(e)
 
     def set_progress(self, progress):
         self.task['progress'] = progress
         try:
             self.update_status()
-        except requests.exceptions.RequestException:
-            pass
+        except requests.exceptions.RequestException as e:
+            print(e)
 
     def complete_file(self):
         self.task['state'] = 'complete'
@@ -100,7 +100,8 @@ class MmrClient(object):
         while True:
             try:
                 self.update_status()
-            except requests.exceptions.RequestException:
+            except requests.exceptions.RequestException as e:
+                print(e)
                 time.sleep(30)
             break
 
@@ -111,7 +112,8 @@ class MmrClient(object):
         while True:
             try:
                 self.update_status()
-            except requests.exceptions.RequestException:
+            except requests.exceptions.RequestException as e:
+                print(e)
                 time.sleep(30)
             break
         self.task = None
