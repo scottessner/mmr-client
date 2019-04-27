@@ -1,0 +1,10 @@
+version: '3'
+
+services:
+  worker:
+    container_name: mmr-worker
+    build: .
+    environment:
+      - API_URL=http://ssessner.com/mmr-api/v1
+    volumes:
+      - /data/media:/data/media

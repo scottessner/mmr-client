@@ -18,7 +18,9 @@ RUN add-apt-repository ppa:stebbins/handbrake-releases \
 # Install software from ppa's
 RUN apt-get update && apt-get -y install --no-install-recommends \
     handbrake-cli \
-    libavcodec-extra
+    libavcodec-extra \
+    ffmpeg \
+    python3-mediainfodll
 
 # Create the group and user to be used in this container
 RUN groupadd ssessner && useradd -m -g ssessner -s /bin/bash ssessner
@@ -50,5 +52,7 @@ COPY . /home/ssessner/client
 RUN chown -R ssessner:ssessner /home/ssessner
 
 USER ssessner
+
+# ENTRYPOINT ["python", "main.py"]
 
 
