@@ -4,7 +4,9 @@ services:
   worker:
     container_name: mmr-worker
     build: .
+    user: root
     environment:
-      - API_URL=http://ssessner.com/mmr-api/v1
+      # - API_URL=http://ssessner.com/mmr-api/v1
+      - API_URL=http://192.168.20.168:5000/v1
     volumes:
-      - /data/media:/data/media
+      - /data/media:/data

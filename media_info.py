@@ -9,6 +9,39 @@ url = 'http://ssessner.com/mmr-api/v1'
 c = TaskClient(url, '/data/media')
 matches = c.search_files('tvshows', r'\.*\Z', r'\.grab')
 
+# def add_file(self, relative_path):
+#
+#     folder, file = os.path.split(relative_path)
+#
+#     resp = requests.post('{}/task'.format(self.url),
+#                          json={'source_path': relative_path})
+#
+#     if resp.status_code == 201:
+#         print('Added: {}'.format(file))
+#     elif resp.status_code == 400:
+#         print('Not added: {}'.format(file))
+#
+#
+# def search_files(self, search_folder, include_regex, exclude_regex):
+#
+#     results = list()
+#
+#     for root, dirs, files in os.walk(os.path.join(self.base_path, search_folder)):
+#
+#         for file in files:
+#
+#             folder = os.path.relpath(root, self.base_path)
+#
+#             relative_path = os.path.join(folder, file)
+#
+#             if re.search(include_regex, relative_path):
+#
+#                 if not re.search(exclude_regex, relative_path):
+#
+#                     results.append(relative_path)
+#
+#     return results
+
 for path in matches:
 
     try:
