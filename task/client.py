@@ -1,12 +1,9 @@
-import os
 import requests
-import re
 import json
-import time
 import platform
-from urllib3.exceptions import NewConnectionError
 from task.transcoder import TranscodeTask
 from task.title_info import TitleInfoTask
+from task.scanner import ScanTask
 
 
 class TaskClient(object):
@@ -31,6 +28,8 @@ class TaskClient(object):
                     task = TranscodeTask(self.url, task_content)
                 if task_content['type'] == 'title_info':
                     task = TitleInfoTask(self.url, task_content)
+                if task_content['type'] == 'preview':
+                    task = ScanTask(self.url, task_content)
                 # elif task_content['type'] == 'remux':
                 #     task = RemuxTask(self.url, self.base_path, task_content)
 
