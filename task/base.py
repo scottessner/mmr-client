@@ -27,13 +27,18 @@ class Task(object):
     def tmp_path(self):
         if self.content:
             folder, file = os.path.split(self.dest_path)
-            return os.path.join('data', 'tmp', 'mmr', file)
+            return os.path.join('/data', 'tmp', 'mmr', file)
         return None
 
     @property
     def log_path(self):
         if self.content:
-            return os.path.join('data', 'tmp', 'logs', '{}.log'.format(self.content['id']))
+            return os.path.join('/data', 'tmp', 'logs', '{}.log'.format(self.content['id']))
+
+    def update_title_path(self, title_path):
+        payload = {'path': title_path}
+        resp = requests.put('{}/titles/{}'.format(self.url, self.content['title']['id']),
+                            json=payload)
 
     def start(self):
         payload = {'state': 'active'}

@@ -24,6 +24,13 @@ class ScanTask(Task):
         for match in matches:
             self.add_file(match)
 
+        # Test folder for scanning
+
+        # matches = self.search_files('/data/tmp/mmr-test', r'\.mkv|\.mp4|\.ts\Z', r'\.grab')
+        #
+        # for match in matches:
+        #     self.add_file(match)
+
         self.complete()
 
     def add_file(self, path):

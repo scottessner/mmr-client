@@ -68,6 +68,7 @@ class TranscodeTask(Task):
                         print('Compressed Successfully.')
                         os.rename(self.tmp_path, self.dest_path)
                         os.remove(self.source_path)
+                        self.update_title_path(self.dest_path)
                         self.complete()
                     else:
                         self.error()
