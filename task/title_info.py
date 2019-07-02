@@ -20,8 +20,9 @@ class TitleInfoTask(Task):
             for track in mi.tracks:
                 if track.track_type == 'General':
                     title['file_size'] = track.file_size
-                    title['duration'] = track.duration
                     title['writing_application'] = track.writing_application
+                    if track.duration is not None:
+                        title['duration'] = int(float(track.duration))
                 elif track.track_type == 'Video':
                     title['height'] = track.height
                     title['width'] = track.width
