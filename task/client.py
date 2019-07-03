@@ -1,6 +1,6 @@
 import requests
 import json
-import platform
+import os
 from task.transcoder import TranscodeTask
 from task.title_info import TitleInfoTask
 from task.scanner import ScanTask
@@ -18,7 +18,7 @@ class TaskClient(object):
         try:
             print('Trying to get a task')
             resp = requests.post('{}/tasks/next'.format(self.url),
-                                 json={'host': platform.node()})
+                                 json={'host': os.environ['NAME']})
 
             print('Status: {}'.format(resp.status_code))
             if resp.status_code == 201:
