@@ -1,6 +1,5 @@
 from task.client import TaskClient
 import os
-import time
 
 print(os.environ['API_URL'])
 
@@ -14,8 +13,4 @@ if task is not None:
         task.execute()
     except Exception:
         task.error()
-    # else:
-    #     break;
-else:
-    print('No tasks available.  Waiting 60 seconds to check again.')
-    time.sleep(60)
+

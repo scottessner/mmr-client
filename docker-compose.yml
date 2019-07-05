@@ -6,7 +6,16 @@ services:
     build: .
     user: root
     environment:
-      # - API_URL=http://ssessner.com/mmr-api/v1
-      - API_URL=http://192.168.20.168:5000/v1
+      - API_URL=http://ssessner.com/mmr-api/v1
+      # - API_URL=http://192.168.20.168:5000/v1
+      - NAME=node-{{.Node.Hostname}}
+
     volumes:
-      - /data/media:/data
+      - media:/data
+volumes:
+  media:
+    driver: local
+    driver_opts:
+      type: "nfs"
+      o: "addr=192.168.40.10,nolock,soft,rw"
+      device: ":/data/media"

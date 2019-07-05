@@ -20,14 +20,15 @@ RUN apt-get update && apt-get -y install --no-install-recommends \
     handbrake-cli \
     libavcodec-extra \
     ffmpeg \
+    nfs-common \
     python3-mediainfodll
 
 # Create the group and user to be used in this container
-RUN groupadd ssessner && useradd -m -g ssessner -s /bin/bash ssessner
+#RUN groupadd ssessner && useradd -m -g ssessner -s /bin/bash ssessner
 
 # Create the working directory (and set it as the working directory)
-RUN mkdir -p /home/ssessner/client
-WORKDIR /home/ssessner/client
+RUN mkdir -p /opt/client
+WORKDIR /opt/client
 
 RUN mkdir -p /data
 
@@ -43,15 +44,15 @@ RUN pip install setuptools
 # from copying all the source code to avoid having to
 # re-install all python packages defined in requirements.txt
 # whenever any source code change is made)
-COPY requirements.txt /home/ssessner/client
+COPY requirements.txt /opt/client
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy the source code into the container
-COPY . /home/ssessner/client
+COPY . /opt/client
 
-RUN chown -R ssessner:ssessner /home/ssessner
-
-USER ssessner
+#RUN chown -R ssessner:ssessner /home/ssessner
+#
+#USER ssessner
 
 CMD ["python", "main.py"]
 
