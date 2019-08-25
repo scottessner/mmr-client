@@ -9,7 +9,13 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     python3-pip \
     python3-dev \
     gcc \
-    git
+    git \
+    locales \
+    locales-all
+
+ENV LANG en_US.UTF-8
+ENV LANGUAGE en_US:en
+ENV LC_ALL en_US.UTF-8
 
 # After we installed software-properties-common, now we can add our ppa's for handbrake
 RUN add-apt-repository ppa:stebbins/handbrake-releases \

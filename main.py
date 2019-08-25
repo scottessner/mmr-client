@@ -12,7 +12,7 @@ while True:
     if task is not None:
         try:
             task.execute()
-        except Exception:
+        except Exception as e:
             task.error()
 
     else:
