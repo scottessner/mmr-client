@@ -29,9 +29,8 @@ class TaskClient(object):
                 else:
                     task_path = ''
 
-                print('Got task: \n  ID: {} \n  Title: {} \n  Type: {}'
+                print('Got task: \n  ID: {} \n  Type: {}'
                       .format(task_content['id'],
-                              task_path,
                               task_content['type']))
 
                 if task_content['type'] == 'compress':
