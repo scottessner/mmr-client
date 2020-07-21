@@ -13,6 +13,7 @@ while True:
         try:
             task.execute()
         except Exception as e:
+            print("Task encountered error: {}".format(e.__traceback__))
             task.error()
 
     else:
