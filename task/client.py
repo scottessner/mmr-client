@@ -23,7 +23,7 @@ class TaskClient(object):
             print('Status: {}'.format(resp.status_code))
             if resp.status_code == 201:
                 task_content = json.loads(resp.text)
-                task_title = task_content['title']
+                task_title = task_content.get('title')
                 if task_title:
                     task_path = task_title.get('path')
                 else:
